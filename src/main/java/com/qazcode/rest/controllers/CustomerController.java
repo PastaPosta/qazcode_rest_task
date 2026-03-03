@@ -23,9 +23,18 @@ public class CustomerController {
     private final CustomerServiceInterface customerService;
 
     @GetMapping
-    @Operation(summary = "Получить всех клиентов", description = "Возвращает полный список клиентов из базы данных")
-    public List<Customer> getAll() {
-        return customerService.getAllCustomers();
+    @Operation(summary = "Получить всех клиентов с пагинацией и сортировкой", description = "Возвращает полный список клиентов из базы данных")
+    public List<Customer> getAll(
+            @Parameter(description = "Номер страницы (с 0)")
+            @RequestParam(defaultValue = "0") int page,
+
+            @Parameter(description = "Количество элементов на странице")
+            @RequestParam(defaultValue = "10") int size,
+
+            @Parameter(description = "Поле для сортировки (например: id, amount, createdAt)")
+            @RequestParam(defaultValue = "id") String sortBy
+    ) {
+        return customerService.getAllCustomers(page, size, sortBy);
     }
 
     @GetMapping("/{id}")

@@ -3,6 +3,7 @@ package com.qazcode.rest.controllers;
 import com.qazcode.rest.entities.Order;
 import com.qazcode.rest.services.OrderServiceInterface;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -22,9 +23,18 @@ public class OrderController {
     private final OrderServiceInterface orderService;
 
     @GetMapping
-    @Operation(summary = "Список всех заказов")
-    public List<Order> getAll() {
-        return orderService.getAllOrders();
+    @Operation(summary = "Список всех заказов с пагинацией и сортировкой")
+    public List<Order> getAll(
+            @Parameter(description = "Номер страницы (с 0)")
+            @RequestParam(defaultValue = "0") int page,
+
+            @Parameter(description = "Количество элементов на странице")
+            @RequestParam(defaultValue = "10") int size,
+
+            @Parameter(description = "Поле для сортировки (например: id, amount, createdAt)")
+            @RequestParam(defaultValue = "id") String sortBy
+    ) {
+        return orderService.getAllOrders(page, size, sortBy);
     }
 
     @PostMapping

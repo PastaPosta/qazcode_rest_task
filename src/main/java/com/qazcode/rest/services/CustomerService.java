@@ -7,6 +7,9 @@ import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -32,8 +35,10 @@ public class CustomerService implements CustomerServiceInterface{
     }
 
     @Override
-    public List<Customer> getAllCustomers() {
-        List<Customer> customers = customerRepository.findAll();
+    public List<Customer> getAllCustomers(int page, int size, String sortBy) {
+        Pageable pageable = PageRequest.of(page,size, Sort.by(sortBy));
+        List<Customer> customers = customerRepository.findAll(pageable).getContent();
+
         if(customers.isEmpty()){
             throw new EntityNotFoundException("no customers right now");
         }

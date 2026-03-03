@@ -7,6 +7,9 @@ import com.qazcode.rest.repositories.OrderRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -40,8 +43,10 @@ public class OrderService implements OrderServiceInterface{
     }
 
     @Override
-    public List<Order> getAllOrders() {
-        List<Order> orders = orderRepository.findAll();
+    public List<Order> getAllOrders(int page, int size, String sortBy) {
+        Pageable pageable = PageRequest.of(page,size, Sort.by(sortBy));
+
+        List<Order> orders = orderRepository.findAll(pageable).getContent();
         if(orders.isEmpty()){
             throw new EntityNotFoundException("No orders right now: ");
         }

@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface OrderServiceInterface {
     Order createOrder(Long customerId, BigDecimal amount);
-    List<Order> getAllOrders();
+    List<Order> getAllOrders(int page, int size, String sortBy);
     Order getById(Long id);
     Order updateOrder(Long id, BigDecimal newAmount);
     Order payOrder(Long id);
