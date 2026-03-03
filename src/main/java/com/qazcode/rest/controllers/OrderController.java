@@ -37,12 +37,22 @@ public class OrderController {
         return orderService.getAllOrders(page, size, sortBy);
     }
 
+    @GetMapping("/{id}")
+    @Operation(summary = "Получить заказ по номеру")
+    @ApiResponses(value ={
+            @ApiResponse(responseCode = "200", description = "Заказ найден"),
+            @ApiResponse(responseCode = "404", description = "Заказ не найден")
+    })
+    public Order getById(@PathVariable Long id){
+        return orderService.getById(id);
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Создать новый заказ", description = "Заказ создается в статусе NEW")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Заказ создан"),
-            @ApiResponse(responseCode = "404", description = "Указанный клиент не найден"),
+            @ApiResponse(responseCode = "404", description = "Указанный заказ не найден"),
             @ApiResponse(responseCode = "400", description = "Сумма заказа должна быть больше 0")
     })
     public Order createOrder(@Valid @RequestBody Order order) {
