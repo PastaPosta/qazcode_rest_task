@@ -22,6 +22,7 @@ JUnit 5 & Mockito
 Клонируйте репозиторий:
 
 git clone github.com/PastaPosta/qazcode_rest_task
+
 cd qazcode_rest_task
 
 Соберите и запустите контейнеры:
